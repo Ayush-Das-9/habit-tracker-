@@ -1,0 +1,503 @@
+/* ── Reset & Base ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font-mono: 'DM Mono', monospace;
+  --font-serif: 'Playfair Display', serif;
+
+  --bg:        #f7f6f2;
+  --surface:   #ffffff;
+  --border:    #e2e1db;
+  --border-md: #c8c7c0;
+
+  --text-primary:   #1a1a18;
+  --text-secondary: #6b6b66;
+  --text-muted:     #a8a8a2;
+
+  /* heatmap greys */
+  --heat-0: #efefeb;
+  --heat-1: #d0cfc8;
+  --heat-2: #9e9d96;
+  --heat-3: #5c5c58;
+  --heat-4: #1a1a18;
+
+  /* activity states */
+  --act-default-bg:     #fff1f1;
+  --act-default-border: #f5c2c2;
+  --act-default-bar:    #e57373;
+  --act-done-bg:        #f0faf4;
+  --act-done-border:    #86c9a0;
+  --act-done-bar:       #2e9e60;
+
+  --today-ring: #2e9e60;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
+
+/* ── Login Screen ────────────────────────────────────── */
+#login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.login-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  width: 100%;
+  max-width: 360px;
+}
+
+.login-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.login-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.5rem;
+}
+
+#pid-input {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  text-align: center;
+  letter-spacing: 0.35em;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--bg);
+}
+
+#pid-input:focus {
+  border-color: var(--text-secondary);
+}
+
+#pid-btn {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--heat-4);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#pid-btn:hover { opacity: 0.85; }
+#pid-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.login-error {
+  margin-top: 0.8rem;
+  font-size: 11px;
+  color: #e57373;
+  min-height: 1.2em;
+}
+
+/* ── App Shell ────────────────────────────────────── */
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Top Bar ──────────────────────────────────────── */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.top-pid {
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.logout-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.logout-btn:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* ── Calendar Section ─────────────────────────────── */
+.calendar-section {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.25rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.1rem;
+}
+
+.cal-month {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.cal-year {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 5px;
+}
+
+.cal-weekdays span {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-align: center;
+  padding-bottom: 4px;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+/* Day cells */
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  border: 0.5px solid transparent;
+  cursor: default;
+  user-select: none;
+}
+
+.cal-day.empty { background: transparent; border-color: transparent; }
+
+.cal-day.heat-0 { background: var(--heat-0); color: var(--text-muted); border-color: var(--border); }
+.cal-day.heat-1 { background: var(--heat-1); color: var(--text-secondary); border-color: var(--heat-1); }
+.cal-day.heat-2 { background: var(--heat-2); color: #fff; border-color: var(--heat-2); }
+.cal-day.heat-3 { background: var(--heat-3); color: #fff; border-color: var(--heat-3); }
+.cal-day.heat-4 { background: var(--heat-4); color: #fff; border-color: var(--heat-4); }
+
+.cal-day.today {
+  outline: 2px solid var(--today-ring);
+  outline-offset: 1.5px;
+  font-weight: 500;
+}
+
+.cal-day.future {
+  opacity: 0.28;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 0.9rem;
+  justify-content: flex-end;
+}
+
+.legend-label {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.legend-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  border: 0.5px solid var(--border);
+}
+
+.ld-0 { background: var(--heat-0); }
+.ld-1 { background: var(--heat-1); border-color: var(--heat-1); }
+.ld-2 { background: var(--heat-2); border-color: var(--heat-2); }
+.ld-3 { background: var(--heat-3); border-color: var(--heat-3); }
+.ld-4 { background: var(--heat-4); border-color: var(--heat-4); }
+
+/* ── Divider ──────────────────────────────────────── */
+.divider {
+  height: 0;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Add Activity Row ─────────────────────────────── */
+.add-activity-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+#new-activity-input {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#new-activity-input:focus {
+  border-color: var(--text-secondary);
+}
+
+#add-activity-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  background: var(--heat-4);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#add-activity-btn:hover { opacity: 0.85; }
+#add-activity-btn:disabled { opacity: 0.5; }
+
+/* ── Activities Section ───────────────────────────── */
+.activities-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.activities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-msg {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2rem 0;
+  letter-spacing: 0.04em;
+}
+
+/* ── Activity Card ────────────────────────────────── */
+.activity-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activity-card {
+  position: relative;
+  background: var(--act-default-bg);
+  border: 1.5px solid var(--act-default-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* State: done */
+.activity-card.done {
+  background: var(--act-done-bg);
+  border-color: var(--act-done-border);
+}
+
+/* Progress bar fill */
+.activity-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 0%;
+  background: var(--act-default-bar);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  pointer-events: none;
+}
+
+.activity-card.done .activity-progress {
+  width: 100%;
+  background: var(--act-done-bar);
+}
+
+/* Card body */
+.activity-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.activity-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.01em;
+}
+
+.activity-card.done .activity-name {
+  color: #1c7a42;
+}
+
+.activity-status {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e57373;
+  margin-top: 3px;
+}
+
+.activity-card.done .activity-status {
+  color: #2e9e60;
+}
+
+/* Indicator dot */
+.activity-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--act-default-border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.activity-card.done .activity-indicator {
+  background: var(--act-done-bar);
+  border-color: var(--act-done-bar);
+}
+
+.activity-indicator svg {
+  display: none;
+  width: 10px;
+  height: 10px;
+}
+
+.activity-card.done .activity-indicator svg {
+  display: block;
+}
+
+/* ── Activity Action Buttons ──────────────────────── */
+.activity-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.act-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.act-btn:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.toggle-btn {
+  border-color: var(--act-done-border);
+  color: #2e9e60;
+}
+
+.toggle-btn:hover {
+  background: var(--act-done-bg);
+  border-color: #2e9e60;
+}
+
+.undo-btn {
+  border-color: #f0c040;
+  color: #b08d00;
+}
+
+.undo-btn:hover {
+  background: #fff8e1;
+  border-color: #b08d00;
+}
+
+.delete-btn {
+  border-color: var(--act-default-border);
+  color: #e57373;
+}
+
+.delete-btn:hover {
+  background: var(--act-default-bg);
+  border-color: #e57373;
+}

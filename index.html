@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <div class="login-box">
+      <h1 class="login-title">Habit Tracker</h1>
+      <p class="login-sub">Enter your 5-digit Person ID</p>
+      <input type="text" id="pid-input" maxlength="5" placeholder="e.g. 10001" inputmode="numeric" autocomplete="off" />
+      <button id="pid-btn">Enter</button>
+      <p class="login-error" id="login-error"></p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (hidden until login) -->
+  <div id="app" style="display:none;">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <span class="top-pid" id="top-pid"></span>
+      <button class="logout-btn" id="logout-btn">Logout</button>
+    </div>
+
+    <!-- CALENDAR SECTION -->
+    <section class="calendar-section">
+      <div class="cal-header">
+        <span class="cal-month" id="cal-month-name">May</span>
+        <span class="cal-year" id="cal-year-val">2026</span>
+      </div>
+      <div class="cal-weekdays">
+        <span>Su</span><span>Mo</span><span>Tu</span>
+        <span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="legend">
+        <span class="legend-label">less</span>
+        <div class="legend-dot ld-0"></div>
+        <div class="legend-dot ld-1"></div>
+        <div class="legend-dot ld-2"></div>
+        <div class="legend-dot ld-3"></div>
+        <div class="legend-dot ld-4"></div>
+        <span class="legend-label">more</span>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="divider"></div>
+
+    <!-- ADD ACTIVITY -->
+    <div class="add-activity-row">
+      <input type="text" id="new-activity-input" placeholder="New activity name…" maxlength="100" />
+      <button id="add-activity-btn">Add</button>
+    </div>
+
+    <!-- ACTIVITIES SECTION -->
+    <section class="activities-section">
+      <div class="activities-list" id="activities-list"></div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
