@@ -8,7 +8,7 @@ const API = 'http://127.0.0.1:8000/api';
 const TODAY      = new Date();
 const YEAR       = TODAY.getFullYear();
 const MONTH      = TODAY.getMonth();
-const TODAY_STR  = TODAY.toISOString().slice(0, 10); // "YYYY-MM-DD"
+const TODAY_STR  = TODAY.getFullYear() + '-' + String(TODAY.getMonth() + 1).padStart(2, '0') + '-' + String(TODAY.getDate()).padStart(2, '0'); // "YYYY-MM-DD" in local time
 const DAYS_IN_MO = new Date(YEAR, MONTH + 1, 0).getDate();
 
 const MONTH_NAMES = [

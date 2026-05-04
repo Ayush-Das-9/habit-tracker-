@@ -129,7 +129,7 @@ async def delete_activity(person_id: str, activity_id: str):
 async def toggle_activity(person_id: str, activity_id: str):
     """Toggle today's completion for an activity."""
     await get_person_or_404(person_id)
-    today_str = date.today().isoformat()  # "YYYY-MM-DD"
+    today_str = date.today().isoformat()  # Uses local date, not UTC
 
     activity = await activities_col.find_one(
         {"_id": ObjectId(activity_id), "person_id": person_id}
