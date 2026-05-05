@@ -11,37 +11,36 @@
 </head>
 <body>
 
-  <!-- LOGIN SCREEN -->
+  <!-- LOGIN -->
   <div id="login-screen">
     <div class="login-box">
       <h1 class="login-title">Habit Tracker</h1>
       <p class="login-sub">Enter your 5-digit Person ID</p>
       <input type="text" id="pid-input" maxlength="5" placeholder="e.g. 10001" inputmode="numeric" autocomplete="off" />
       <button id="pid-btn">Enter</button>
-      <p class="login-error" id="login-error"></p>
+      <p id="login-error"></p>
     </div>
   </div>
 
   <!-- DASHBOARD (hidden until login) -->
   <div id="app" style="display:none;">
 
-    <!-- Top bar -->
     <div class="top-bar">
-      <span class="top-pid" id="top-pid"></span>
-      <button class="logout-btn" id="logout-btn">Logout</button>
+      <span id="top-pid"></span>
+      <button id="logout-btn">Logout</button>
     </div>
 
-    <!-- CALENDAR SECTION -->
+    <!-- CALENDAR -->
     <section class="calendar-section">
       <div class="cal-header">
-        <span class="cal-month" id="cal-month-name">May</span>
-        <span class="cal-year" id="cal-year-val">2026</span>
+        <span class="cal-month" id="cal-month-name"></span>
+        <span class="cal-year" id="cal-year-val"></span>
       </div>
       <div class="cal-weekdays">
         <span>Su</span><span>Mo</span><span>Tu</span>
         <span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
       </div>
-      <div class="cal-grid" id="cal-grid"></div>
+      <div id="cal-grid" class="cal-grid"></div>
       <div class="legend">
         <span class="legend-label">less</span>
         <div class="legend-dot ld-0"></div>
@@ -53,19 +52,14 @@
       </div>
     </section>
 
-    <!-- DIVIDER -->
-    <div class="divider"></div>
-
     <!-- ADD ACTIVITY -->
-    <div class="add-activity-row">
-      <input type="text" id="new-activity-input" placeholder="New activity name…" maxlength="100" />
-      <button id="add-activity-btn">Add</button>
+    <div class="add-row">
+      <input type="text" id="new-activity" placeholder="New activity…" maxlength="100" />
+      <button id="add-btn">Add</button>
     </div>
 
-    <!-- ACTIVITIES SECTION -->
-    <section class="activities-section">
-      <div class="activities-list" id="activities-list"></div>
-    </section>
+    <!-- ACTIVITIES -->
+    <div id="activities-list"></div>
 
   </div>
 

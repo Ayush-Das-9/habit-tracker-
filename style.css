@@ -1,48 +1,33 @@
-/* ── Reset & Base ─────────────────────────────────── */
+/* Reset */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --font-mono: 'DM Mono', monospace;
   --font-serif: 'Playfair Display', serif;
-
-  --bg:        #f7f6f2;
-  --surface:   #ffffff;
-  --border:    #e2e1db;
-  --border-md: #c8c7c0;
-
-  --text-primary:   #1a1a18;
-  --text-secondary: #6b6b66;
-  --text-muted:     #a8a8a2;
-
-  /* heatmap greys */
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --border: #e2e1db;
+  --text: #1a1a18;
+  --text-light: #6b6b66;
+  --text-muted: #a8a8a2;
   --heat-0: #efefeb;
   --heat-1: #d0cfc8;
   --heat-2: #9e9d96;
   --heat-3: #5c5c58;
   --heat-4: #1a1a18;
-
-  /* activity states */
-  --act-default-bg:     #fff1f1;
-  --act-default-border: #f5c2c2;
-  --act-default-bar:    #e57373;
-  --act-done-bg:        #f0faf4;
-  --act-done-border:    #86c9a0;
-  --act-done-bar:       #2e9e60;
-
-  --today-ring: #2e9e60;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --green: #2e9e60;
+  --red: #e57373;
+  --radius: 8px;
 }
 
 html, body {
   background: var(--bg);
-  color: var(--text-primary);
+  color: var(--text);
   font-family: var(--font-mono);
   min-height: 100vh;
 }
 
-/* ── Login Screen ────────────────────────────────────── */
+/* ── Login ─────────────────────────── */
 #login-screen {
   display: flex;
   align-items: center;
@@ -54,7 +39,7 @@ html, body {
 .login-box {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 2.5rem 2rem;
   text-align: center;
   width: 100%;
@@ -70,8 +55,7 @@ html, body {
 
 .login-sub {
   font-size: 12px;
-  color: var(--text-secondary);
-  letter-spacing: 0.04em;
+  color: var(--text-light);
   margin-bottom: 1.5rem;
 }
 
@@ -83,15 +67,12 @@ html, body {
   letter-spacing: 0.35em;
   padding: 0.7rem 1rem;
   border: 1.5px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius);
   outline: none;
-  transition: border-color 0.2s;
   background: var(--bg);
 }
 
-#pid-input:focus {
-  border-color: var(--text-secondary);
-}
+#pid-input:focus { border-color: var(--text-light); }
 
 #pid-btn {
   margin-top: 1rem;
@@ -105,32 +86,29 @@ html, body {
   background: var(--heat-4);
   color: #fff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: opacity 0.2s;
 }
 
-#pid-btn:hover { opacity: 0.85; }
 #pid-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.login-error {
+#login-error {
   margin-top: 0.8rem;
   font-size: 11px;
-  color: #e57373;
+  color: var(--red);
   min-height: 1.2em;
 }
 
-/* ── App Shell ────────────────────────────────────── */
+/* ── App Shell ─────────────────────── */
 #app {
   max-width: 480px;
   margin: 0 auto;
   padding: 1.5rem 1.25rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
-/* ── Top Bar ──────────────────────────────────────── */
+/* ── Top Bar ───────────────────────── */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -138,37 +116,31 @@ html, body {
   margin-bottom: 1.25rem;
 }
 
-.top-pid {
+#top-pid {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: var(--text-light);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
-.logout-btn {
+#logout-btn {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   background: none;
   border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   padding: 0.35rem 0.75rem;
   cursor: pointer;
-  color: var(--text-secondary);
-  transition: border-color 0.2s, color 0.2s;
+  color: var(--text-light);
 }
 
-.logout-btn:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
-}
-
-/* ── Calendar Section ─────────────────────────────── */
+/* ── Calendar ──────────────────────── */
 .calendar-section {
   background: var(--surface);
   border: 0.5px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   padding: 1.5rem 1.25rem 1rem;
   margin-bottom: 1.25rem;
 }
@@ -177,15 +149,13 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .cal-month {
   font-family: var(--font-serif);
   font-size: 26px;
   font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
 }
 
 .cal-year {
@@ -203,7 +173,6 @@ html, body {
 
 .cal-weekdays span {
   font-size: 10px;
-  letter-spacing: 0.06em;
   color: var(--text-muted);
   text-align: center;
   padding-bottom: 4px;
@@ -215,38 +184,27 @@ html, body {
   gap: 4px;
 }
 
-/* Day cells */
 .cal-day {
   aspect-ratio: 1;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   font-weight: 500;
-  font-family: var(--font-mono);
   border: 0.5px solid transparent;
-  cursor: default;
-  user-select: none;
 }
 
-.cal-day.empty { background: transparent; border-color: transparent; }
+.cal-day.empty { background: transparent; }
 
 .cal-day.heat-0 { background: var(--heat-0); color: var(--text-muted); border-color: var(--border); }
-.cal-day.heat-1 { background: var(--heat-1); color: var(--text-secondary); border-color: var(--heat-1); }
-.cal-day.heat-2 { background: var(--heat-2); color: #fff; border-color: var(--heat-2); }
-.cal-day.heat-3 { background: var(--heat-3); color: #fff; border-color: var(--heat-3); }
-.cal-day.heat-4 { background: var(--heat-4); color: #fff; border-color: var(--heat-4); }
+.cal-day.heat-1 { background: var(--heat-1); color: var(--text-light); }
+.cal-day.heat-2 { background: var(--heat-2); color: #fff; }
+.cal-day.heat-3 { background: var(--heat-3); color: #fff; }
+.cal-day.heat-4 { background: var(--heat-4); color: #fff; }
 
-.cal-day.today {
-  outline: 2px solid var(--today-ring);
-  outline-offset: 1.5px;
-  font-weight: 500;
-}
-
-.cal-day.future {
-  opacity: 0.28;
-}
+.cal-day.today { outline: 2px solid var(--green); outline-offset: 1.5px; }
+.cal-day.future { opacity: 0.28; }
 
 /* Legend */
 .legend {
@@ -259,7 +217,6 @@ html, body {
 
 .legend-label {
   font-size: 9px;
-  letter-spacing: 0.08em;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -272,69 +229,49 @@ html, body {
 }
 
 .ld-0 { background: var(--heat-0); }
-.ld-1 { background: var(--heat-1); border-color: var(--heat-1); }
-.ld-2 { background: var(--heat-2); border-color: var(--heat-2); }
-.ld-3 { background: var(--heat-3); border-color: var(--heat-3); }
-.ld-4 { background: var(--heat-4); border-color: var(--heat-4); }
+.ld-1 { background: var(--heat-1); }
+.ld-2 { background: var(--heat-2); }
+.ld-3 { background: var(--heat-3); }
+.ld-4 { background: var(--heat-4); }
 
-/* ── Divider ──────────────────────────────────────── */
-.divider {
-  height: 0;
-  margin-bottom: 1.25rem;
-}
-
-/* ── Add Activity Row ─────────────────────────────── */
-.add-activity-row {
+/* ── Add Row ───────────────────────── */
+.add-row {
   display: flex;
   gap: 8px;
   margin-bottom: 1rem;
 }
 
-#new-activity-input {
+#new-activity {
   flex: 1;
   font-family: var(--font-mono);
   font-size: 13px;
   padding: 0.6rem 0.8rem;
   border: 1.5px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius);
   background: var(--surface);
   outline: none;
-  transition: border-color 0.2s;
 }
 
-#new-activity-input:focus {
-  border-color: var(--text-secondary);
-}
+#new-activity:focus { border-color: var(--text-light); }
 
-#add-activity-btn {
+#add-btn {
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 0.6rem 1.2rem;
   background: var(--heat-4);
   color: #fff;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: opacity 0.2s;
 }
 
-#add-activity-btn:hover { opacity: 0.85; }
-#add-activity-btn:disabled { opacity: 0.5; }
-
-/* ── Activities Section ───────────────────────────── */
-.activities-section {
+/* ── Activity Cards ────────────────── */
+#activities-list {
   display: flex;
   flex-direction: column;
-  gap: 0;
-}
-
-.activities-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .empty-msg {
@@ -342,162 +279,66 @@ html, body {
   color: var(--text-muted);
   text-align: center;
   padding: 2rem 0;
-  letter-spacing: 0.04em;
-}
-
-/* ── Activity Card ────────────────────────────────── */
-.activity-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .activity-card {
-  position: relative;
-  background: var(--act-default-bg);
-  border: 1.5px solid var(--act-default-border);
-  border-radius: var(--radius-md);
-  padding: 1rem 1.2rem;
-  overflow: hidden;
-  user-select: none;
-}
-
-/* State: done */
-.activity-card.done {
-  background: var(--act-done-bg);
-  border-color: var(--act-done-border);
-}
-
-/* Progress bar fill */
-.activity-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 4px;
-  width: 0%;
-  background: var(--act-default-bar);
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
-  pointer-events: none;
-}
-
-.activity-card.done .activity-progress {
-  width: 100%;
-  background: var(--act-done-bar);
-}
-
-/* Card body */
-.activity-body {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+}
+
+.activity-card.done {
+  border-left: 4px solid var(--green);
 }
 
 .activity-name {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-primary);
-  letter-spacing: 0.01em;
 }
 
 .activity-card.done .activity-name {
-  color: #1c7a42;
+  color: var(--green);
 }
 
-.activity-status {
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #e57373;
-  margin-top: 3px;
-}
-
-.activity-card.done .activity-status {
-  color: #2e9e60;
-}
-
-/* Indicator dot */
-.activity-indicator {
-  width: 20px;
-  height: 20px;
+/* Circle indicator */
+.activity-circle {
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  border: 2px solid var(--act-default-border);
+  border: 2px solid var(--border);
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s, background 0.2s;
 }
 
-.activity-card.done .activity-indicator {
-  background: var(--act-done-bar);
-  border-color: var(--act-done-bar);
+.activity-card.done .activity-circle {
+  background: var(--green);
+  border-color: var(--green);
 }
 
-.activity-indicator svg {
-  display: none;
-  width: 10px;
-  height: 10px;
-}
-
-.activity-card.done .activity-indicator svg {
-  display: block;
-}
-
-/* ── Activity Action Buttons ──────────────────────── */
-.activity-actions {
+/* Action buttons */
+.activity-btns {
   display: flex;
   gap: 6px;
+  margin-bottom: 4px;
 }
 
-.act-btn {
+.btn {
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 0.35rem 0.8rem;
-  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.7rem;
+  border-radius: var(--radius);
   border: 1.5px solid var(--border);
   background: var(--surface);
   cursor: pointer;
-  color: var(--text-secondary);
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  color: var(--text-light);
 }
 
-.act-btn:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
-}
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.toggle-btn {
-  border-color: var(--act-done-border);
-  color: #2e9e60;
-}
-
-.toggle-btn:hover {
-  background: var(--act-done-bg);
-  border-color: #2e9e60;
-}
-
-.undo-btn {
-  border-color: #f0c040;
-  color: #b08d00;
-}
-
-.undo-btn:hover {
-  background: #fff8e1;
-  border-color: #b08d00;
-}
-
-.delete-btn {
-  border-color: var(--act-default-border);
-  color: #e57373;
-}
-
-.delete-btn:hover {
-  background: var(--act-default-bg);
-  border-color: #e57373;
-}
+.done-btn { color: var(--green); border-color: var(--green); }
+.del-btn { color: var(--red); border-color: var(--red); }
