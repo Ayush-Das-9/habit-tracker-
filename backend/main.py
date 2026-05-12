@@ -1,4 +1,5 @@
 import os
+import asyncio
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +10,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from datetime import datetime, date
 from dotenv import load_dotenv
+from groq import Groq
+import httpx
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(Path(__file__).parent / ".env")
@@ -23,7 +26,33 @@ if not MONGO_URI:
 
 db = AsyncIOMotorClient(MONGO_URI)["habit_tracker"]
 persons = db["persons"]
-activities = db["activities"]
+activities_col = db["activities"]
+
+# Groq
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+
+# Keep-alive for Render
+RENDER_URL = os.getenv("RENDER_EXTERNAL_URL")
+
+async def keep_alive():
+    """Ping own URL every 12 minutes to prevent Render free-tier spin-down."""
+    if not RENDER_URL:
+        print("RENDER_EXTERNAL_URL not set — keep-alive disabled.")
+        return
+    print(f"Keep-alive started → pinging {RENDER_URL} every 12 min")
+    async with httpx.AsyncClient() as client:
+        while True:
+            await asyncio.sleep(12 * 60)  # 12 minutes
+            try:
+                r = await client.get(RENDER_URL)
+                print(f"Keep-alive ping: {r.status_code}")
+            except Exception as e:
+                print(f"Keep-alive ping failed: {e}")
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(keep_alive())
 
 
 # Request models
@@ -56,7 +85,7 @@ async def login(body: PersonIn):
 @app.get("/api/person/{pid}/activities")
 async def list_activities(pid: str):
     docs = []
-    async for doc in activities.find({"person_id": pid}):
+    async for doc in activities_col.find({"person_id": pid}):
         docs.append(doc_to_dict(doc))
     return {"activities": docs}
 
@@ -68,7 +97,7 @@ async def add_activity(pid: str, body: ActivityIn):
     if not person:
         raise HTTPException(404, "Person not found")
     doc = {"person_id": pid, "name": body.name, "completions": []}
-    result = await activities.insert_one(doc)
+    result = await activities_col.insert_one(doc)
     doc["_id"] = str(result.inserted_id)
     return {"activity": doc}
 
@@ -77,23 +106,82 @@ async def add_activity(pid: str, body: ActivityIn):
 @app.post("/api/person/{pid}/activities/{act_id}/done")
 async def mark_done(pid: str, act_id: str):
     today_str = date.today().isoformat()
-    result = await activities.update_one(
+    result = await activities_col.update_one(
         {"_id": ObjectId(act_id), "person_id": pid},
         {"$addToSet": {"completions": today_str}},
     )
     if result.matched_count == 0:
         raise HTTPException(404, "Activity not found")
-    updated = await activities.find_one({"_id": ObjectId(act_id)})
+    updated = await activities_col.find_one({"_id": ObjectId(act_id)})
     return {"activity": doc_to_dict(updated)}
 
 
 # --- Delete activity ---
 @app.delete("/api/person/{pid}/activities/{act_id}")
 async def delete_activity(pid: str, act_id: str):
-    result = await activities.delete_one({"_id": ObjectId(act_id), "person_id": pid})
+    result = await activities_col.delete_one({"_id": ObjectId(act_id), "person_id": pid})
     if result.deleted_count == 0:
         raise HTTPException(404, "Activity not found")
     return {"deleted": True}
+
+
+# --- AI Agent ---
+@app.get("/api/person/{pid}/agent")
+async def agent_analyze(pid: str):
+    if not groq_client:
+        raise HTTPException(500, "GROQ_API_KEY not configured")
+
+    person = await persons.find_one({"person_id": pid})
+    if not person:
+        raise HTTPException(404, "Person not found")
+
+    # Fetch all habits
+    habits = []
+    async for doc in activities_col.find({"person_id": pid}):
+        habits.append({
+            "name": doc.get("name", "Unknown"),
+            "completions": doc.get("completions", [])
+        })
+
+    if not habits:
+        return {"answers": [
+            "No habits found to analyze.",
+            "No habits found to analyze.",
+            "No habits found to analyze."
+        ]}
+
+    # Build context
+    context = "User Habit Data:\n"
+    for i, h in enumerate(habits, 1):
+        completed = ", ".join(h["completions"]) if h["completions"] else "Never completed"
+        context += f"{i}. Habit: {h['name']}\n   Completed on: {completed}\n"
+
+    prompt = f"""You are a habit analysis agent. Here is the user's habit data:
+
+{context}
+
+Today's date is {date.today().isoformat()}.
+
+Answer these 3 questions ONLY. Keep answers short and direct (2-3 sentences max each).
+Format your response as exactly 3 numbered answers, nothing else.
+
+1. Which habits have been done continuously for more than 20 consecutive days?
+2. Which activity does the user spend the most time on (most completions)?
+3. If any habit has been done for more than 21 consecutive days, suggest removing it from the tracker since it is now a permanent habit.
+"""
+
+    try:
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": "You are a habit analysis agent. Give short direct answers."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        answer_text = response.choices[0].message.content
+        return {"answer": answer_text}
+    except Exception as e:
+        raise HTTPException(500, f"AI error: {str(e)}")
 
 
 # --- Serve frontend ---

@@ -61,6 +61,22 @@
     <!-- ACTIVITIES -->
     <div id="activities-list"></div>
 
+    <!-- AI AGENT -->
+    <button id="agent-btn">🤖 Ask AI Agent</button>
+
+    <!-- AGENT MODAL -->
+    <div id="agent-overlay" class="agent-overlay" style="display:none;">
+      <div class="agent-modal">
+        <div class="agent-header">
+          <span>🤖 AI Agent Analysis</span>
+          <button id="agent-close" class="agent-close">&times;</button>
+        </div>
+        <div id="agent-content" class="agent-content">
+          <p class="agent-loading">Agent is generating...</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>

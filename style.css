@@ -342,3 +342,96 @@ html, body {
 
 .done-btn { color: var(--green); border-color: var(--green); }
 .del-btn { color: var(--red); border-color: var(--red); }
+
+/* ── AI Agent Button ──────────────── */
+#agent-btn {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  background: var(--surface);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+#agent-btn:hover {
+  background: var(--heat-4);
+  color: #fff;
+  border-color: var(--heat-4);
+}
+
+/* ── Agent Modal ──────────────────── */
+.agent-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.agent-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 440px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.agent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.agent-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text-light);
+  line-height: 1;
+}
+
+.agent-content {
+  padding: 1.25rem;
+}
+
+.agent-loading {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-light);
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.agent-line {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+
+.agent-error {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--red);
+  text-align: center;
+  padding: 1rem 0;
+}

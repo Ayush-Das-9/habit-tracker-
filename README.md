@@ -1,49 +1,72 @@
-# Habit Tracker
+# 🌟 Habit Tracker
 
-Track daily habits with a simple web interface. Each user gets their own dashboard using a 5-digit ID.
+> Track daily habits with a simple web interface. Each user gets their own personalized dashboard using a secure 5-digit ID.
 
-## What it does
+---
 
-- Log in with a 5-digit person ID
-- Add, rename, delete activities
-- Mark activities as done for the day
-- See a monthly heatmap of your completions
+## ✨ Features
 
-## Tech used
+- 🔐 **Secure Access**: Log in with a unique 5-digit person ID.
+- ➕ **Manage Habits**: Easily add and delete activities.
+- ✅ **Daily Tracking**: Mark activities as done for the day with a single click.
+- 📅 **Visual Insights**: See a monthly heatmap of your completions.
+- 🤖 **AI Agent**: Get AI-powered analysis and insights into your habits.
 
-- HTML, CSS, JavaScript (frontend)
-- FastAPI + MongoDB Atlas (backend)
+---
 
-## How to run
+## 💻 Tech Stack
 
-1. Install dependencies:
+- **Frontend**: HTML, CSS, Vanilla JavaScript
+- **Backend**: FastAPI ⚡ (Python)
+- **Database**: MongoDB Atlas 🍃
+- **AI Integration**: Groq API 🧠
 
-```
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the application locally:
+
+### 1. Install Dependencies
+
+Navigate to the `backend` directory and install the required Python packages:
+
+```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-2. Add your MongoDB connection string in `backend/.env`:
+### 2. Configure Environment Variables
 
-```
-MONGO_URI=your_connection_string_here
+Create a `.env` file in the `backend` directory and add your credentials:
+
+```env
+MONGO_URI=your_mongodb_connection_string_here
+GROQ_API_KEY=your_groq_api_key_here
 ```
 
-3. Start the server:
+### 3. Start the Server
 
-```
+Run the FastAPI server using Uvicorn:
+
+```bash
 uvicorn main:app --reload
 ```
 
-4. Open http://127.0.0.1:8000
+### 4. Open the App
 
-## API routes
+Visit the application in your browser at:  
+👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
-```
-POST   /api/person                                  - login/register
-GET    /api/person/{pid}/activities                  - list activities
-POST   /api/person/{pid}/activities                  - add activity
-PUT    /api/person/{pid}/activities/{id}             - rename activity
-DELETE /api/person/{pid}/activities/{id}             - delete activity
-POST   /api/person/{pid}/activities/{id}/toggle      - toggle done for today
-```
+---
+
+## 📡 API Routes
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/person` | Login or register a new user |
+| `GET` | `/api/person/{pid}/activities` | List all activities for a user |
+| `POST` | `/api/person/{pid}/activities` | Add a new activity |
+| `POST` | `/api/person/{pid}/activities/{id}/done`| Mark an activity as done for today |
+| `DELETE`| `/api/person/{pid}/activities/{id}` | Delete an activity |
+| `GET` | `/api/person/{pid}/agent` | Get AI agent analysis of habits |

@@ -1,6 +1,6 @@
 /* app.js — Habit Tracker */
 
-const API = 'http://127.0.0.1:8000/api';
+const API = '/api';
 
 // Date info
 const TODAY     = new Date();
@@ -188,4 +188,43 @@ function buildList() {
     list.appendChild(card);
     list.appendChild(btns);
   });
+}
+
+// --- AI Agent ---
+document.getElementById('agent-btn').addEventListener('click', askAgent);
+document.getElementById('agent-close').addEventListener('click', () => {
+  document.getElementById('agent-overlay').style.display = 'none';
+});
+document.getElementById('agent-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) document.getElementById('agent-overlay').style.display = 'none';
+});
+
+async function askAgent() {
+  const overlay = document.getElementById('agent-overlay');
+  const content = document.getElementById('agent-content');
+
+  overlay.style.display = 'flex';
+  content.innerHTML = '<p class="agent-loading">🤖 Agent is generating...</p>';
+
+  try {
+    const res = await fetch(`${API}/person/${pid}/agent`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      content.innerHTML = `<p class="agent-error">Error: ${data.detail || 'Something went wrong'}</p>`;
+      return;
+    }
+
+    const answer = data.answer || 'No response from agent.';
+    // Format: split by numbered lines
+    const lines = answer.split('\n').filter(l => l.trim());
+    let html = '';
+    lines.forEach(line => {
+      html += `<p class="agent-line">${line}</p>`;
+    });
+    content.innerHTML = html;
+
+  } catch (err) {
+    content.innerHTML = `<p class="agent-error">Could not connect to agent.</p>`;
+  }
 }
