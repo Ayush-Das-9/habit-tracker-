@@ -281,6 +281,12 @@ html, body {
   padding: 2rem 0;
 }
 
+.activity-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .activity-card {
   display: flex;
   align-items: center;
@@ -295,12 +301,41 @@ html, body {
   border-left: 4px solid var(--green);
 }
 
+.activity-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .activity-name {
   font-size: 14px;
   font-weight: 500;
 }
 
 .activity-card.done .activity-name {
+  color: var(--green);
+}
+
+.daily-badge {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.activity-status {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.activity-card.done .activity-status {
   color: var(--green);
 }
 

@@ -136,28 +136,52 @@ function buildList() {
   list.innerHTML = '';
 
   if (activities.length === 0) {
-    list.innerHTML = '<p class="empty-msg">No activities yet. Add one above!</p>';
+    list.innerHTML = '<p class="empty-msg">No daily habits yet. Add one above!</p>';
     return;
   }
 
   activities.forEach(act => {
     const done = (act.completions || []).includes(TODAY_STR);
 
+    // Wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'activity-wrapper';
+
     // Card
     const card = document.createElement('div');
     card.className = `activity-card${done ? ' done' : ''}`;
 
-    // Name
+    // Left side: name + daily badge
+    const left = document.createElement('div');
+    left.className = 'activity-left';
+
     const name = document.createElement('span');
     name.className = 'activity-name';
     name.textContent = act.name;
 
-    // Circle indicator
+    const badge = document.createElement('span');
+    badge.className = 'daily-badge';
+    badge.textContent = '🔄 Daily';
+
+    left.appendChild(name);
+    left.appendChild(badge);
+
+    // Right side: status + circle
+    const right = document.createElement('div');
+    right.className = 'activity-right';
+
+    const status = document.createElement('span');
+    status.className = 'activity-status';
+    status.textContent = done ? '✓ Done today' : 'Pending today';
+
     const circle = document.createElement('div');
     circle.className = 'activity-circle';
 
-    card.appendChild(name);
-    card.appendChild(circle);
+    right.appendChild(status);
+    right.appendChild(circle);
+
+    card.appendChild(left);
+    card.appendChild(right);
 
     // Buttons
     const btns = document.createElement('div');
@@ -166,7 +190,7 @@ function buildList() {
     if (!done) {
       const doneBtn = document.createElement('button');
       doneBtn.className = 'btn done-btn';
-      doneBtn.textContent = 'Done';
+      doneBtn.textContent = '✓ Mark Done';
       doneBtn.addEventListener('click', async () => {
         doneBtn.disabled = true;
         await fetch(`${API}/person/${pid}/activities/${act._id}/done`, { method: 'POST' });
@@ -185,8 +209,9 @@ function buildList() {
     });
     btns.appendChild(delBtn);
 
-    list.appendChild(card);
-    list.appendChild(btns);
+    wrapper.appendChild(card);
+    wrapper.appendChild(btns);
+    list.appendChild(wrapper);
   });
 }
 

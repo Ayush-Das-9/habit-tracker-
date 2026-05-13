@@ -156,27 +156,28 @@ async def agent_analyze(pid: str):
         completed = ", ".join(h["completions"]) if h["completions"] else "Never completed"
         context += f"{i}. Habit: {h['name']}\n   Completed on: {completed}\n"
 
-    prompt = f"""You are a habit analysis agent. Here is the user's habit data:
+    today = date.today().isoformat()
 
-{context}
+    # Count today's completions
+    done_today = sum(1 for h in habits if today in h["completions"])
+    total = len(habits)
 
-Today's date is {date.today().isoformat()}.
+    prompt = f"""{context}
+Today: {today}. Completed today: {done_today}/{total} daily habits.
 
-Answer these 3 questions ONLY. Keep answers short and direct (2-3 sentences max each).
-Format your response as exactly 3 numbered answers, nothing else.
-
-1. Which habits have been done continuously for more than 20 consecutive days?
-2. Which activity does the user spend the most time on (most completions)?
-3. If any habit has been done for more than 21 consecutive days, suggest removing it from the tracker since it is now a permanent habit.
-"""
+Give exactly 3 short answers (1 sentence each, no extras):
+1. Which daily habit has the best streak or most completions? Congratulate briefly.
+2. Which daily habit needs more attention? One small tip.
+3. One short motivational sentence about their overall daily habit progress."""
 
     try:
         response = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": "You are a habit analysis agent. Give short direct answers."},
+                {"role": "system", "content": "You are a habit coach. Be very brief — 1 sentence per answer, no fluff."},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            max_tokens=200
         )
         answer_text = response.choices[0].message.content
         return {"answer": answer_text}
